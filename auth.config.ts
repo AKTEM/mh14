@@ -1,5 +1,3 @@
-import type { NextAuthConfig } from 'next-auth';
-
 export const authConfig = {
   trustHost: true,
   useSecureCookies: process.env.NODE_ENV === 'production',
@@ -10,12 +8,12 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
-      
+
       if (isOnDashboard) {
         if (isLoggedIn && auth?.user?.roles?.includes('author')) return true;
         return false;
       }
-      
+
       return true;
     },
     jwt({ token, user }) {
@@ -41,4 +39,4 @@ export const authConfig = {
     },
   },
   providers: [],
-} satisfies NextAuthConfig;
+} satisfies Parameters<typeof import("next-auth").default>[0];
